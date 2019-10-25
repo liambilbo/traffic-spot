@@ -47,7 +47,7 @@ public class TrafficEventReceiverConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Event> kafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, Event> concurrentKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, Event> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
