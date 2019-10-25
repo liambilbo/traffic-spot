@@ -33,8 +33,8 @@ public class TrafficEventSenderConfig {
 
     @Bean
     public ProducerFactory<String, Event> producerFactory() {
-        //return new DefaultKafkaProducerFactory<>(producerConfigs());
-        new DefaultKafkaProducerFactory<String,Event>(producerConfigs(),new StringSerializer(),new JsonSerializer<>(Event.class));
+        return new DefaultKafkaProducerFactory<>(producerConfigs());
+        //new DefaultKafkaProducerFactory<String,Event>(producerConfigs(),new StringSerializer(),new JsonSerializer<>(Event.class));
     }
 
     @Bean
