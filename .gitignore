@@ -1,0 +1,8 @@
+/enrichment-rules-test/target/
+/generate-event-to-kafka/target/
+/kafka-producer/target/
+/model/target/
+/postfilter-rules-test/target/
+/services/target/
+/shared/target/
+/spark/target/
