@@ -1,0 +1,4 @@
+## YAML Template.
+---
+kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers}

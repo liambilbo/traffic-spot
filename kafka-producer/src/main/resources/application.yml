@@ -1,0 +1,11 @@
+## YAML Template.
+---
+kafka:
+    bootstrap:
+        host: kafka-broker
+        port: 9092
+    producer:
+        topic: DEFAULT
+    consumer:
+        group: ConsumerGroup
+        topic: DEFAULT
