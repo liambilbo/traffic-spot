@@ -127,9 +127,14 @@ public class Driver implements Serializable {
 
     @Override
     public String toString() {
-        return "Driver [identificationNumber = " + identificationNumber + ", firstName=" + firstName + ", lastName=" + lastName + ", licenseNumber=" + licenseNumber  + "]";
+        return "Driver{" +
+                "id=" + id +
+                ", identificationNumber='" + identificationNumber + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", nationality=" + nationality +
+                ", licenseNumber='" + licenseNumber + '\'' +
+                '}';
     }
-
-
-
 }
