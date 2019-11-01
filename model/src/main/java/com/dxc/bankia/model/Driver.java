@@ -12,8 +12,6 @@ public class Driver implements Serializable {
 
     private Long id;
 
-
-
     private String identificationNumber;
     private String firstName;
     private String lastName;
