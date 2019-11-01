@@ -10,6 +10,10 @@ import java.util.Objects;
 @Traitable
 public class Event implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+
+
     public enum Type {
         REQUEST_SANCTION_COMPLIANCE,REQUEST_CAR_ITV_COMPLIANCE,REQUEST_DRIVER_ITV_COMPLIANCE
     }
@@ -18,18 +22,26 @@ public class Event implements Serializable {
     private Long id;
     private Type type;
     private String registrationNumber;
-
-
     private String identificationNumber;
-
-
     private Vehicle vehicle;
-
-
-
     private Driver driver;
 
-    public Event() {
+    public Event(){
+
+    }
+
+    public Event(Event event) {
+        this.id=event.id;
+        this.type=event.type;
+        this.registrationNumber=event.registrationNumber;
+        this.identificationNumber=event.identificationNumber;
+    }
+
+    public Event(Long id,Type type,String registrationNumber, String identificationNumber) {
+        this.id=id;
+        this.type=type;
+        this.registrationNumber=registrationNumber;
+        this.identificationNumber=identificationNumber;
     }
 
     public Long getId() {
@@ -78,6 +90,16 @@ public class Event implements Serializable {
 
     public void setDriver(Driver driver) {
         this.driver = driver;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", type=" + type +
+                ", registrationNumber='" + registrationNumber + '\'' +
+                ", identificationNumber='" + identificationNumber + '\'' +
+                '}';
     }
 
 
