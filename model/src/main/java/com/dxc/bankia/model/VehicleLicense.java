@@ -13,7 +13,7 @@ public class VehicleLicense implements Serializable {
 
 
     private Long id;
-    private Driver driver;
+    private String identificationNumber;
     private Type type;
     private Date inceptionDate;
 
@@ -28,14 +28,6 @@ public class VehicleLicense implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Driver getDriver() {
-        return driver;
-    }
-
-    public void setDriver(Driver driver) {
-        this.driver = driver;
     }
 
     public Type getType() {
@@ -54,20 +46,28 @@ public class VehicleLicense implements Serializable {
         this.inceptionDate = inceptionDate;
     }
 
+    public String getIdentificationNumber() {
+        return identificationNumber;
+    }
+
+    public void setIdentificationNumber(String identificationNumber) {
+        this.identificationNumber = identificationNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof VehicleLicense)) return false;
         VehicleLicense that = (VehicleLicense) o;
         return getId().equals(that.getId()) &&
-                getDriver().equals(that.getDriver()) &&
+                getIdentificationNumber() == that.getIdentificationNumber() &&
                 getType() == that.getType() &&
                 getInceptionDate().equals(that.getInceptionDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getDriver(), getType(), getInceptionDate());
+        return Objects.hash(getId(), getType(), getInceptionDate());
     }
 
 
