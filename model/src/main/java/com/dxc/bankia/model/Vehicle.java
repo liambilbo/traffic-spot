@@ -19,7 +19,7 @@ public class Vehicle implements Serializable {
     private Color color;
     private Brand brand;
     private String model;
-    private Driver owner;
+    private String owner;
 
     private Date lastItvDate;            ;
     private Date nextItvDate;
@@ -75,11 +75,11 @@ public class Vehicle implements Serializable {
         this.model = model;
     }
 
-    public Driver getOwner() {
+    public String getOwner() {
         return owner;
     }
 
-    public void setOwner(Driver owner) {
+    public void setOwner(String owner) {
         this.owner = owner;
     }
 
@@ -134,4 +134,18 @@ public class Vehicle implements Serializable {
         return getLastItvDate()!=null?this.getLastItvDate():this.getRegistrationDate();
     }
 
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "id=" + id +
+                ", registrationNumber='" + registrationNumber + '\'' +
+                ", registrationDate=" + registrationDate +
+                ", country=" + country +
+                ", category=" + category +
+                ", owner='" + owner + '\'' +
+                ", lastItvDate=" + lastItvDate +
+                ", nextItvDate=" + nextItvDate +
+                '}';
+    }
 }
