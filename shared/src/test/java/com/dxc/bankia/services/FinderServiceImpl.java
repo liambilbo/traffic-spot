@@ -6,11 +6,12 @@ import com.dxc.bankia.model.Vehicle;
 import com.dxc.bankia.util.DriverBuilder;
 import com.dxc.bankia.util.VehicleBuilder;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import static com.dxc.bankia.model.functions.DateUtils.toDate;
 
-public class FinderServiceImpl implements  FinderService {
+public class FinderServiceImpl implements  FinderService , Serializable {
     @Override
     public Vehicle getVehicleByRegistrationNumber(String registrationNumber) {
         switch (registrationNumber){
@@ -48,6 +49,17 @@ public class FinderServiceImpl implements  FinderService {
                         .withRegistrationNumber("LL 231")
                         .withCountry(Country.ES)
                         .withRegistrationDate(toDate(LocalDate.of(2018,7,23)))
+                        .build();
+            case "ES 217":
+                return new VehicleBuilder()
+                        .withId(3L)
+                        .withModel("My jaguar")
+                        .withCategory(Vehicle.Category.CAR)
+                        .withColor(Vehicle.Color.BLUE)
+                        .withBrand(Vehicle.Brand.JAGUAR)
+                        .withRegistrationNumber("ES 217")
+                        .withCountry(Country.GR)
+                        .withRegistrationDate(toDate(LocalDate.of(1991,7,23)))
                         .build();
             default:
                 return null;
