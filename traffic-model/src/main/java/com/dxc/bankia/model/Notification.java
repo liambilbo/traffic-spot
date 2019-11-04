@@ -9,6 +9,12 @@ public class Notification implements Serializable {
         NOTICE,WARNING,NOT_COMPLIANCE,SANCTION
     }
 
+    private Long id;
+    private Long eventId;
+    private Event.Type eventType;
+    private Type type;
+    private String message;
+
     public Long getId() {
         return id;
     }
@@ -57,7 +63,7 @@ public class Notification implements Serializable {
         return id.equals(that.id) &&
                 eventId.equals(that.eventId) &&
                 eventType == that.eventType &&
-                type == that.type &&
+                type == that.getType() &&
                 Objects.equals(message, that.message);
     }
 
@@ -66,15 +72,19 @@ public class Notification implements Serializable {
         return Objects.hash(id, eventId, eventType, type, message);
     }
 
-    private Long id;
-    private Long eventId;
-    private Event.Type eventType;
-    private Type type;
-    private String message;
+
 
     public Notification(){
 
     }
 
-
+    @java.lang.Override
+    public java.lang.String toString() {
+        return "Notification{" +
+                "eventId=" + eventId +
+                ", eventType=" + eventType +
+                ", type=" + type +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

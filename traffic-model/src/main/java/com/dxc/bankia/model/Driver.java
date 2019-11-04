@@ -19,9 +19,9 @@ public class Driver implements Serializable {
     private Date dateOfBirth;
     private Country nationality;
     private String licenseNumber;
-    private List<VehicleLicense> licenses = new ArrayList<>();
+    private List<VehicleLicense> licenses = new ArrayList();
     private Address address;
-    private List<Vehicle> vehicles = new ArrayList<>();
+    private List<Vehicle> vehicles = new ArrayList();
 
     public Driver() {
     }
