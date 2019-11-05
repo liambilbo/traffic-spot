@@ -5,7 +5,9 @@
         </encoder>
     </appender>
     
-    <logger name="org.drools" level="DEBUG"/>
+    <logger name="org.drools" level="WARN"/>
+    <logger name="org.kie.api.builder.KieScanner" level="DEBUG"/>
+
     
     <root level="DEBUG">          
         <appender-ref ref="STDOUT" />
