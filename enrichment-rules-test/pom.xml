@@ -26,7 +26,7 @@
             <groupId>com.dxc.bankia</groupId>
             <artifactId>traffic-enrichment-rules-kjar</artifactId>
             <type>jar</type>
-            <version>1.1.0</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <!--dependency>
@@ -38,7 +38,8 @@
 
         <dependency>
             <groupId>com.dxc.bankia</groupId>
-            <artifactId>services</artifactId>
+            <artifactId>traffic-services</artifactId>
+            <version>1.0.0</version>
             <type>jar</type>
             <scope>test</scope>
         </dependency>
