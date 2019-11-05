@@ -9,11 +9,13 @@
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <modules>
-        <module>shared</module>
+        <module>traffic-model</module>
+        <module>traffic-services</module>
+        <module>traffic-service-impl</module>
+<!--
         <module>enrichment-rules-test</module>
         <module>postfilter-rules-test</module>
-        <module>spark</module>
-        <module>generate-event-to-kafka</module>
+-->
         <module>kafka-producer</module>
         <module>spark-streaming-consumer</module>
     </modules>
@@ -55,18 +57,12 @@
             </dependency>
             <dependency>
                 <groupId>com.dxc.bankia</groupId>
-                <artifactId>services</artifactId>
+                <artifactId>traffic-services</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.dxc.bankia</groupId>
-                <artifactId>shared</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dxc.bankia</groupId>
-                <artifactId>shared</artifactId>
-                <type>test-jar</type>
+                <artifactId>traffic-service-impl</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/flatten-maven-plugin -->
