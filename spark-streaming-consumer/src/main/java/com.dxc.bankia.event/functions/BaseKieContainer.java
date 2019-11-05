@@ -35,7 +35,7 @@ public class BaseKieContainer {
      * For performance purposes, we keep a cached container. Please note that 
      * this is not Thread Safe at all!.
      */
-    private static KieContainer cachedKieContainer;
+    private KieContainer cachedKieContainer;
 
     protected KieSession createDefaultSession() {
         return this.createContainer(null).newKieSession();

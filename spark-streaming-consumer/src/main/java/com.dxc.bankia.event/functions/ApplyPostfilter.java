@@ -4,6 +4,7 @@ import com.dxc.bankia.event.objects.EventExecuted;
 import com.dxc.bankia.model.Event;
 import com.dxc.bankia.services.FinderService;
 import com.dxc.bankia.services.FinderServiceImpl;
+import com.dxc.bankia.services.NotificationChannelImpl;
 import com.dxc.bankia.services.OutputChannelImpl;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.kie.api.KieServices;
@@ -34,7 +35,7 @@ public class ApplyPostfilter extends BaseKieContainer implements FlatMapFunction
     private FinderService finderService=new FinderServiceImpl();
     private OutputChannelImpl errorServiceChannel = new OutputChannelImpl();
     private OutputChannelImpl filterServiceChannel = new OutputChannelImpl();
-    private OutputChannelImpl notificationServiceChannel = new OutputChannelImpl();
+    private NotificationChannelImpl notificationServiceChannel = new NotificationChannelImpl();
 
    public ApplyPostfilter(String groupId, String artifactId, String version){
         this.groupId=groupId;
@@ -50,12 +51,13 @@ public class ApplyPostfilter extends BaseKieContainer implements FlatMapFunction
        // Logger LOGGER = LogManager.getLogger(ApplyEnrichment.class);
         KieServices ks = KieServices.Factory.get();
         ReleaseId releaseId = ks.newReleaseId(groupId, artifactId, version);
-        StatelessKieSession statelessKieSession = this.createStatelessSession("enrichmentStatelessSession",releaseId);
+        StatelessKieSession statelessKieSession = this.createStatelessSession("postFilterStatelessSession",releaseId);
         //FinderService finderService=new FinderServiceImpl
         //Get Blog type from kie base
         statelessKieSession.setGlobal("finderService", finderService);
         statelessKieSession.registerChannel("error-channel",errorServiceChannel);
         statelessKieSession.registerChannel("filter-channel",filterServiceChannel);
+        statelessKieSession.registerChannel("notification-channel",notificationServiceChannel);
 
         List output = new ArrayList();
 
@@ -89,8 +91,10 @@ public class ApplyPostfilter extends BaseKieContainer implements FlatMapFunction
                 executed.setFiltered(true);
             }
 
-            if (!executed.isWithErrors() && !executed.isFiltered()) {
-                executed.setEnriched(true);
+            if (notificationServiceChannel.hasNotifications()) {
+                notificationServiceChannel.getNotifications().stream().forEach((e) -> executed.addNotification(e));
+                notificationServiceChannel.getNotifications().clear();
+                executed.setWithNotifications(true);
             }
 
             output.add(executed);
