@@ -24,7 +24,7 @@ import java.util.*;
  * @see KieSession
  * @see
  */
-public class ApplyEnrichment extends BaseKieContainer implements FlatMapFunction<Iterator<Event>, EventExecuted> {
+public class ApplyEnrichment implements FlatMapFunction<Iterator<Event>, EventExecuted> {
 
 
     private String groupId = "com.dxc.bankia";

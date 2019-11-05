@@ -28,7 +28,7 @@ import java.util.List;
  * @see KieSession
  * @see
  */
-public class ApplyPostfilter extends BaseKieContainer implements FlatMapFunction<Iterator<Event>, EventExecuted> {
+public class ApplyPostfilter implements FlatMapFunction<Iterator<Event>, EventExecuted> {
 
 
     private String groupId = "com.dxc.bankia";
