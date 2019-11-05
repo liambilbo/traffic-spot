@@ -1,6 +1,7 @@
 package com.dxc.bankia.event.objects;
 
 import com.dxc.bankia.model.Event;
+import com.dxc.bankia.model.Notification;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,12 +12,15 @@ public class EventExecuted implements Serializable {
     private int result;
 
     private boolean withErrors=false;
+    private boolean withNotifications=false;
     private boolean filtered=false;
 
 
     private boolean enriched=false;
     private List<String> errors=new ArrayList<>();
     private List<String> filters=new ArrayList<>();
+
+    private List<Notification> notifications=new ArrayList<>();
 
     public Event getEvent() {
         return event;
@@ -66,6 +70,14 @@ public class EventExecuted implements Serializable {
         this.filtered = filtered;
     }
 
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
     public EventExecuted(Event event, int result) {
         this.event = event;
         this.result = result;
@@ -87,6 +99,18 @@ public class EventExecuted implements Serializable {
         this.filters.add(message);
     }
 
+    public void addNotification(Notification notification){
+        this.notifications.add(notification);
+    }
+
+    public boolean isWithNotifications() {
+        return withNotifications;
+    }
+
+    public void setWithNotifications(boolean withNotifications) {
+        this.withNotifications = withNotifications;
+    }
+
 
     @Override
     public String toString() {
@@ -97,6 +121,7 @@ public class EventExecuted implements Serializable {
                  " -registrationNumber " +  event.getRegistrationNumber() +
                 ", result=" + result +
                 ", withErrors=" + withErrors +
+                ", withNotifications=" + withNotifications +
                 ", filtered=" + filtered +
                 ", enriched=" + enriched +
                 '}';
