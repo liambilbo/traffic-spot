@@ -1,7 +1,6 @@
 package com.dxc.bankia.model.functions;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;

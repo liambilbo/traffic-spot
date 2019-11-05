@@ -21,7 +21,7 @@ public class Vehicle implements Serializable {
     private String model;
     private String owner;
 
-    private Date lastItvDate;            ;
+    private Date lastItvDate;
     private Date nextItvDate;
 
     public Vehicle() {
