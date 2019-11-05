@@ -6,9 +6,11 @@ import com.dxc.bankia.services.FinderService;
 import com.dxc.bankia.services.FinderServiceImpl;
 import com.dxc.bankia.services.OutputChannelImpl;
 import org.apache.spark.api.java.function.FlatMapFunction;
-import org.apache.spark.sql.Row;
 import org.kie.api.KieServices;
+import org.kie.api.builder.KieScanner;
+import org.kie.api.builder.Message;
 import org.kie.api.builder.ReleaseId;
+import org.kie.api.builder.Results;
 import org.kie.api.command.Command;
 import org.kie.api.runtime.*;
 
@@ -27,45 +29,70 @@ public class ApplyEnrichment extends BaseKieContainer implements FlatMapFunction
 
     private String groupId = "com.dxc.bankia";
     private String  artifactId = "traffic-enrichment-rules-kjar";
-    private String  version = "1.2.0";
+    private String  version = "1.0.0-SNAPSHOT";
+
     private FinderService finderService=new FinderServiceImpl();
     private OutputChannelImpl errorServiceChannel = new OutputChannelImpl();
     private OutputChannelImpl filterServiceChannel = new OutputChannelImpl();
 
-
-   public ApplyEnrichment(String groupId, String artifactId, String version){
-        this.groupId=groupId;
-        this.artifactId=artifactId;
-        this.version=version;
+    private static class EnrichmentContainerHolder {
+        static final ApplyEnrichment instance = new ApplyEnrichment();
     }
-    @Override
-    public Iterator<EventExecuted> call(Iterator<Event> rowIte) throws Exception {
-       System.out.println("Start kie session");
 
+    private KieScanner kieScanner;
+    private KieContainer kieContainer;
+
+    private ApplyEnrichment() {
+        System.out.println("Start kie session");
         System.setProperty("kie.maven.settings.custom", "/root/.m2/settings.xml");
-        //Initlized kie base
-       // Logger LOGGER = LogManager.getLogger(ApplyEnrichment.class);
         KieServices ks = KieServices.Factory.get();
         ReleaseId releaseId = ks.newReleaseId(groupId, artifactId, version);
-        StatelessKieSession statelessKieSession = this.createStatelessSession("enrichmentStatelessSession",releaseId);
+        kieContainer = ks.newKieContainer(releaseId);
+        //The KieContainer is wrapped by a KieScanner.
+        //Note that we are never starting the KieScanner because we want to control
+        //when the upgrade process kicks in.
+        kieScanner = ks.newKieScanner(kieContainer);
+        kieScanner.start(30_000L);
+        // kieScanner.scanNow();
+
+        Results results = kieContainer.verify();
+
+        if (results.hasMessages(Message.Level.WARNING, Message.Level.ERROR)){
+            List<Message> messages = results.getMessages(Message.Level.WARNING, Message.Level.ERROR);
+            for (Message message : messages) {
+                System.out.printf("[%s] - %s[%s,%s]: %s", message.getLevel(), message.getPath(), message.getLine(), message.getColumn(), message.getText());
+            }
+
+            throw new IllegalStateException("Compilation errors were found. Check the logs.");
+        }
+    }
+
+    public static ApplyEnrichment getInstance() {
+        return EnrichmentContainerHolder.instance;
+    }
+
+    @Override
+    public Iterator<EventExecuted> call(Iterator<Event> rowIte) throws Exception {
+
+        StatelessKieSession statelessKieSession = kieContainer.newStatelessKieSession("enrichmentStatelessSession");
         //FinderService finderService=new FinderServiceImpl
         //Get Blog type from kie base
         statelessKieSession.setGlobal("finderService", finderService);
         statelessKieSession.registerChannel("error-channel",errorServiceChannel);
         statelessKieSession.registerChannel("filter-channel",filterServiceChannel);
+        KieServices ks = KieServices.Factory.get();
 
         List output = new ArrayList();
+
 
         System.out.println("Begining event iteration");
 
         while (rowIte.hasNext()) {
             Event event= rowIte.next();
             System.out.println("Adding event");
-
-
             Command newInsertOrder = ks.getCommands().newInsert(event, "eventOut");
             Command newFireAllRules = ks.getCommands().newFireAllRules("outFired");
-            List<Command> cmds = new ArrayList<Command>();
+            List<Command> cmds = new ArrayList<>();
             cmds.add(newInsertOrder);
             cmds.add(newFireAllRules);
             ExecutionResults execResults = statelessKieSession.execute(ks.getCommands().newBatchExecution(cmds));

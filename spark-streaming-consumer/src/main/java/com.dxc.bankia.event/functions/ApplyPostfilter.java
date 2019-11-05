@@ -8,11 +8,13 @@ import com.dxc.bankia.services.NotificationChannelImpl;
 import com.dxc.bankia.services.OutputChannelImpl;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.kie.api.KieServices;
+import org.kie.api.builder.KieScanner;
+import org.kie.api.builder.Message;
 import org.kie.api.builder.ReleaseId;
+import org.kie.api.builder.Results;
 import org.kie.api.command.Command;
-import org.kie.api.runtime.ExecutionResults;
-import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.StatelessKieSession;
+import org.kie.api.runtime.*;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,34 +33,62 @@ public class ApplyPostfilter extends BaseKieContainer implements FlatMapFunction
 
     private String groupId = "com.dxc.bankia";
     private String  artifactId = "traffic-postfilter-rules-kjar";
-    private String  version = "1.2.0";
+    private String  version = "1.0.0-SNAPSHOT";
+
     private FinderService finderService=new FinderServiceImpl();
     private OutputChannelImpl errorServiceChannel = new OutputChannelImpl();
     private OutputChannelImpl filterServiceChannel = new OutputChannelImpl();
     private NotificationChannelImpl notificationServiceChannel = new NotificationChannelImpl();
 
-   public ApplyPostfilter(String groupId, String artifactId, String version){
-        this.groupId=groupId;
-        this.artifactId=artifactId;
-        this.version=version;
+   private static class PostfilterContainerHolder {
+        static final ApplyPostfilter instance = new ApplyPostfilter();
     }
-    @Override
-    public Iterator<EventExecuted> call(Iterator<Event> rowIte) throws Exception {
-       System.out.println("Start kie session");
 
+    private KieScanner kieScanner;
+    private KieContainer kieContainer;
+
+
+    private ApplyPostfilter() {
+        System.out.println("Start kie session");
         System.setProperty("kie.maven.settings.custom", "/root/.m2/settings.xml");
-        //Initlized kie base
-       // Logger LOGGER = LogManager.getLogger(ApplyEnrichment.class);
         KieServices ks = KieServices.Factory.get();
         ReleaseId releaseId = ks.newReleaseId(groupId, artifactId, version);
-        StatelessKieSession statelessKieSession = this.createStatelessSession("postFilterStatelessSession",releaseId);
+        kieContainer = ks.newKieContainer(releaseId);
+        //The KieContainer is wrapped by a KieScanner.
+        //Note that we are never starting the KieScanner because we want to control
+        //when the upgrade process kicks in.
+        kieScanner = ks.newKieScanner(kieContainer);
+        kieScanner.start(30_000L);
+        // kieScanner.scanNow();
+
+        Results results = kieContainer.verify();
+
+        if (results.hasMessages(Message.Level.WARNING, Message.Level.ERROR)){
+            List<Message> messages = results.getMessages(Message.Level.WARNING, Message.Level.ERROR);
+            for (Message message : messages) {
+                System.out.printf("[%s] - %s[%s,%s]: %s", message.getLevel(), message.getPath(), message.getLine(), message.getColumn(), message.getText());
+            }
+
+            throw new IllegalStateException("Compilation errors were found. Check the logs.");
+        }
+    }
+
+    public static ApplyPostfilter getInstance() {
+        return PostfilterContainerHolder.instance;
+    }
+
+    @Override
+    public Iterator<EventExecuted> call(Iterator<Event> rowIte) throws Exception {
+
+        StatelessKieSession statelessKieSession = kieContainer.newStatelessKieSession("enrichmentStatelessSession");
+
         //FinderService finderService=new FinderServiceImpl
         //Get Blog type from kie base
         statelessKieSession.setGlobal("finderService", finderService);
         statelessKieSession.registerChannel("error-channel",errorServiceChannel);
         statelessKieSession.registerChannel("filter-channel",filterServiceChannel);
         statelessKieSession.registerChannel("notification-channel",notificationServiceChannel);
-
+        KieServices ks = KieServices.Factory.get();
         List output = new ArrayList();
 
         System.out.println("Begining event iteration");

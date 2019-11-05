@@ -80,12 +80,10 @@ public class EventEnrichmentPostfilterPipe {
         //Process DStream
         JavaDStream<Event> events = stream.map(ConsumerRecord::value);
 
-        JavaDStream<EventExecuted> enrichmentExecuted = events.map(Event::new).mapPartitions(new ApplyEnrichment("com.dxc.bankia"
-                , "traffic-enrichment-rules-kjar" , "1.0.0-SNAPSHOT"));
+        JavaDStream<EventExecuted> enrichmentExecuted = events.map(Event::new).mapPartitions(ApplyEnrichment.getInstance());
 
         JavaDStream<EventExecuted> postfilterExecuted =  enrichmentExecuted.filter(EventExecuted::isEnriched)
-                .map(EventExecuted::getEvent).mapPartitions(new ApplyPostfilter("com.dxc.bankia"
-                , "traffic-postfilter-rules-kjar" , "1.0.0-SNAPSHOT"));
+                .map(EventExecuted::getEvent).mapPartitions(ApplyPostfilter.getInstance());
 
         postfilterExecuted.print();
 

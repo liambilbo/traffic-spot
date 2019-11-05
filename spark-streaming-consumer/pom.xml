@@ -71,14 +71,8 @@
     </dependency>
     <dependency>
         <groupId>com.dxc.bankia</groupId>
-        <artifactId>traffic-services</artifactId>
+        <artifactId>traffic-service-impl</artifactId>
         <type>jar</type>
-        <version>1.0.0</version>
-    </dependency>
-    <dependency>
-        <groupId>com.dxc.bankia</groupId>
-        <artifactId>shared</artifactId>
-        <type>test-jar</type>
         <version>1.0.0</version>
     </dependency>
     <dependency>

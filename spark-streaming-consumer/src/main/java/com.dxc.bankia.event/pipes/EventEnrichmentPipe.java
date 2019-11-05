@@ -79,8 +79,7 @@ public class EventEnrichmentPipe {
         //Process DStream
         JavaDStream<Event> events = stream.map(ConsumerRecord::value);
 
-        JavaDStream<EventExecuted> executed = events.map(Event::new).mapPartitions(new ApplyEnrichment("com.dxc.bankia"
-                , "traffic-enrichment-rules-kjar" , "1.0.0-SNAPSHOT"));
+        JavaDStream<EventExecuted> executed = events.mapPartitions(ApplyEnrichment.getInstance());
 
         executed.print();
 
