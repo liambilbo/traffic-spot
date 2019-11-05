@@ -15,9 +15,6 @@ public class SanctionBuilder {
 
     private static Long sanctionIdGenerator = 0L;
 
-    public SanctionBuilder(Vehicle vehicle) {
-        this(vehicle,vehicle.getOwner());
-    }
     public SanctionBuilder(Vehicle vehicle, Driver driver) {
         instance = new Sanction();
         instance.setId(sanctionIdGenerator++);

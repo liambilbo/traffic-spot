@@ -12,10 +12,23 @@
     <artifactId>shared</artifactId>
 
     <packaging>jar</packaging>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>local-maven</id>
+            <url>http://nexus:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>local-maven</id>
+            <url>http://nexus:8081/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.dxc.bankia</groupId>
-            <artifactId>model</artifactId>
+            <artifactId>traffic-model</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.kie</groupId>

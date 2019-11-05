@@ -70,12 +70,12 @@ public class DriverBuilder {
         if (vehicleBuilder.isPresent()) {
             instance.getVehicles().add(vehicleBuilder.get().build());
         }
-        vehicleBuilder = Optional.of(new VehicleBuilder(instance));
+        vehicleBuilder = Optional.of(new VehicleBuilder(instance.getIdentificationNumber()));
         return vehicleBuilder.get();
     }
 
     public DriverBuilder withVehicle(Vehicle vehicle){
-        vehicle.setOwner(instance);
+        vehicle.setOwner(instance.getIdentificationNumber());
         instance.getVehicles().add(vehicle);
         return this;
     }

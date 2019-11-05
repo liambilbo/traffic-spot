@@ -26,10 +26,10 @@ public class VehicleBuilder {
         instance.setId(iddGenerator++);
     }
 
-    public VehicleBuilder(Driver driver) {
+    public VehicleBuilder(String owner) {
         instance = new Vehicle();
         instance.setId(iddGenerator++);
-        instance.setOwner(driver);
+        instance.setOwner(owner);
     }
 
     public VehicleBuilder withId(Long id){
@@ -79,6 +79,11 @@ public class VehicleBuilder {
 
     public VehicleBuilder withNextItvDate(Date nextItvDate){
         instance.setLastItvDate(nextItvDate);
+        return this;
+    }
+
+    public VehicleBuilder withOwner(String owner){
+        instance.setOwner(owner);
         return this;
     }
     public Vehicle build(){

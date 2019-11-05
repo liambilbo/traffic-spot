@@ -16,7 +16,7 @@ public class VehicleLicenseBuilder {
     public VehicleLicenseBuilder(Driver driver) {
         instance = new VehicleLicense();
         instance.setId(idGenerator++);
-        instance.setDriver(driver);
+        //instance.setDriver(driver);
     }
 
     public VehicleLicenseBuilder withId(Long id){

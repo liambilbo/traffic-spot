@@ -14,6 +14,7 @@ import org.kie.api.builder.Results;
 import org.kie.api.runtime.ClassObjectFilter;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.StatelessKieSession;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -62,6 +63,18 @@ public class BaseTest {
 
     protected <T> Collection<T> getFactsFromKieSession(KieSession ksession, Class<T> classType) {
         return (Collection<T>) ksession.getObjects(new ClassObjectFilter(classType));
+    }
+
+    protected StatelessKieSession createStatelessSession(String name, ReleaseId releaseId) {
+
+        KieContainer kContainer = this.createContainer(releaseId);
+        StatelessKieSession ksession = kContainer.newStatelessKieSession(name);
+
+        if (ksession == null){
+            throw new IllegalArgumentException("Unknown Session with name '"+name+"'");
+        }
+
+        return ksession;
     }
 
     
