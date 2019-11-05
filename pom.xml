@@ -9,14 +9,13 @@
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <modules>
-        <module>model</module>
         <module>shared</module>
-        <module>services</module>
         <module>enrichment-rules-test</module>
         <module>postfilter-rules-test</module>
-        <!--module>spark</module-->
+        <module>spark</module>
         <module>generate-event-to-kafka</module>
         <module>kafka-producer</module>
+        <module>spark-streaming-consumer</module>
     </modules>
 
     <properties>
@@ -409,25 +408,27 @@
 
 </dependencyManagement>
 
-    <repositories>
+    <!--repositories>
         <repository>
             <id>maven-public</id>
             <url>http://localhost:8081/repository/maven-public/</url>
             <layout>default</layout>
+            <snapshots>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
         </repository>
-    </repositories>
+    </repositories-->
 
     <distributionManagement>
         <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <url>http://localhost:8081/repository/maven-snapshots/</url>
+            <id>local-maven</id>
+            <url>nexus:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
         <repository>
-            <id>nexus-releases</id>
-            <url>http://localhost:8081/repository/maven-releases/</url>
+            <id>local-maven</id>
+            <url>nexus:8081/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
-
 
     <!--build>
         <plugins>

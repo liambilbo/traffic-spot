@@ -63,12 +63,12 @@ public class EventEnrichmentPipe {
         //SparkSession sparkSession = SparkSession.builder().master("local[2]").appName("com.dxc.bankia.event.pipies.EventEnrichmentPipe").config("spark.logConf","true").getOrCreate();
 
         JavaSparkContext sc = new JavaSparkContext(sparkSession.sparkContext());
-        sc.setLogLevel("INFO");
+        sc.setLogLevel("WARN");
 
         JavaStreamingContext jssc= new JavaStreamingContext(new JavaSparkContext(sparkSession.sparkContext()),
                 Durations.seconds(5));
 
-        sparkSession.sparkContext().setLogLevel("INFO");
+        sparkSession.sparkContext().setLogLevel("WARN");
 
         JavaInputDStream<ConsumerRecord<String, Event>> stream = KafkaUtils.createDirectStream(
                 jssc,

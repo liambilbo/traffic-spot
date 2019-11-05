@@ -9,20 +9,71 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>postfilter-rules-test</artifactId>
+    <artifactId>spark</artifactId>
+
+<!--
+    libraryDependencies += "org.apache.spark" %% "spark-core" % "2.4.3"
+    libraryDependencies += "org.apache.spark" %% "spark-mllib" % "2.4.3"
+    libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.4.3"
+    libraryDependencies += "org.apache.spark" %% "spark-streaming-kafka-0-10-assembly" % "2.4.3"
+    libraryDependencies += "org.apache.spark" %% "spark-sql-kafka-0-10" % "2.4.3"
+    libraryDependencies += "org.apache.spark" %% "spark-streaming-kafka-0-10" % "2.4.3"
+
+    libraryDependencies += "org.apache.spark" %% "spark-streaming" % "2.4.3" % "provided"
+-->
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_2.11</artifactId>
+            <version>2.4.3</version>
+        </dependency>
+
+       <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_2.11</artifactId>
+            <version>2.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming-kafka-0-10_2.11</artifactId>
+            <version>2.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql-kafka-0-10_2.11</artifactId>
+            <version>2.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming_2.11</artifactId>
+            <version>2.4.3</version>
+            <!--scope>provided</scope-->
+        </dependency>
+        <dependency>
+            <groupId>com.dxc.bankia</groupId>
+            <artifactId>traffic-model</artifactId>
+            <type>jar</type>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dxc.bankia</groupId>
+            <artifactId>traffic-services</artifactId>
+            <type>jar</type>
+            <version>1.0.0</version>
+        </dependency>
         <dependency>
             <groupId>com.dxc.bankia</groupId>
             <artifactId>shared</artifactId>
             <type>test-jar</type>
-            <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>com.dxc.bankia</groupId>
             <artifactId>traffic-postfilter-rules-kjar</artifactId>
             <type>jar</type>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.4.0</version>
         </dependency>
 
 
@@ -30,51 +81,38 @@
             <groupId>com.dxc.bankia</groupId>
             <artifactId>services</artifactId>
             <type>jar</type>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-api</artifactId>
             <type>jar</type>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-ci</artifactId>
             <type>jar</type>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-compiler</artifactId>
             <type>jar</type>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-core</artifactId>
             <type>jar</type>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-decisiontables</artifactId>
             <type>jar</type>
-            <scope>test</scope>
         </dependency>
 
 
-        <dependency>
-            <groupId>org.drools</groupId>
-            <artifactId>drools-workbench-models-guided-dtable</artifactId>
-            <type>jar</type>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-templates</artifactId>
             <type>jar</type>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.hsqldb</groupId>
@@ -125,6 +163,43 @@
             <artifactId>drools-workbench-models-datamodel-api</artifactId>
         </dependency>
 
+        <!--        <dependency>
+                    <groupId>org.apache.kafka</groupId>
+                    <artifactId>kafka_2.11</artifactId>
+                    <version>2.3.0</version>
+                </dependency>-->
+        <!--<dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_2.11</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-hive_2.11</artifactId>
+        </dependency>-->
     </dependencies>
+
+    <!--build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <tarLongFileMode>gnu</tarLongFileMode>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build-->
 
 </project>
