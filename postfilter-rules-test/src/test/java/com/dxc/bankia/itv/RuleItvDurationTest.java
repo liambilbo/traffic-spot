@@ -47,7 +47,7 @@ public class RuleItvDurationTest extends BaseTest {
 
         String groupId = "com.dxc.bankia";
         String artifactId = "traffic-postfilter-rules-kjar";
-        String version = "1.2.0";
+        String version = "1.1.0-SNAPSHOT";
 
         //KieServices ks = KieServices.Factory.get();
         ReleaseId releaseId = ks.newReleaseId(groupId, artifactId, version);

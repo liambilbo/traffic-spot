@@ -42,7 +42,7 @@ public class RuleEventItvComplianceTest extends BaseTest {
 
         String groupId = "com.dxc.bankia";
         String artifactId = "traffic-postfilter-rules-kjar";
-        String version = "1.4.0";
+        String version = "1.0.0-SNAPSHOT";
 
         //KieServices ks = KieServices.Factory.get();
         ReleaseId releaseId = ks.newReleaseId(groupId, artifactId, version);
@@ -62,7 +62,7 @@ public class RuleEventItvComplianceTest extends BaseTest {
 
         //Implement a Channel that notifies AuditService when new instances of
         //SuspiciousOperation are available.
-        final Set<Event> erroResults = new HashSet<>();
+        final Set<String> erroResults = new HashSet<>();
         final Set<Notification> notificationResults = new HashSet<>();
         Channel errorServiceChannel = new Channel(){
 
@@ -70,7 +70,7 @@ public class RuleEventItvComplianceTest extends BaseTest {
             public void send(Object object) {
                 //notify AuditService here. For testing purposes, we are just
                 //going to store the received object in a Set.
-                erroResults.add((Event) object);
+                erroResults.add((String) object);
             }
 
         };
@@ -90,12 +90,17 @@ public class RuleEventItvComplianceTest extends BaseTest {
         ksession.registerChannel("error-channel",errorServiceChannel);
         ksession.registerChannel("notification-channel",notificationServiceChannel);
 
+
+
         Event event1=new EventBuilder()
                 .withId(1L)
                 .withType(Event.Type.REQUEST_CAR_ITV_COMPLIANCE)
-                .withRegistrationNumber("XSC 1234")
+                .withRegistrationNumber("ES 217")
                 .build();
-        event1.setVehicle(finderService.getVehicleByRegistrationNumber("XSC 1234"));
+        event1.setVehicle(finderService.getVehicleByRegistrationNumber("ES 217"));
+
+
+
 
 
 
