@@ -4,7 +4,6 @@ import com.dxc.bankia.services.FinderService;
 import com.dxc.bankia.services.FinderServiceImpl;
 import com.dxc.bankia.services.OutputChannelImpl;
 import org.kie.api.KieServices;
-import org.kie.api.builder.ReleaseId;
 import org.kie.api.runtime.StatelessKieSession;
 
 public class TrafficStatelessSession {

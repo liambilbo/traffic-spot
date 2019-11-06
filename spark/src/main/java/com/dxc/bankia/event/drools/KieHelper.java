@@ -1,7 +1,5 @@
 package com.dxc.bankia.event.drools;
 
-import com.dxc.bankia.event.functions.BaseKieContainer;
-import com.dxc.bankia.services.FinderService;
 import com.dxc.bankia.services.FinderServiceImpl;
 import com.dxc.bankia.services.OutputChannelImpl;
 import org.kie.api.KieServices;
@@ -10,7 +8,6 @@ import org.kie.api.builder.Message;
 import org.kie.api.builder.ReleaseId;
 import org.kie.api.builder.Results;
 import org.kie.api.runtime.KieContainer;
-import org.kie.api.runtime.StatelessKieSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
