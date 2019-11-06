@@ -59,16 +59,10 @@
         </dependency>
         <dependency>
             <groupId>com.dxc.bankia</groupId>
-            <artifactId>traffic-services</artifactId>
+            <artifactId>traffic-service-impl</artifactId>
             <type>jar</type>
             <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.dxc.bankia</groupId>
-            <artifactId>shared</artifactId>
-            <type>test-jar</type>
-        </dependency>
-
         <dependency>
             <groupId>com.dxc.bankia</groupId>
             <artifactId>traffic-postfilter-rules-kjar</artifactId>
@@ -76,12 +70,6 @@
             <version>1.4.0</version>
         </dependency>
 
-
-        <dependency>
-            <groupId>com.dxc.bankia</groupId>
-            <artifactId>services</artifactId>
-            <type>jar</type>
-        </dependency>
         <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-api</artifactId>
