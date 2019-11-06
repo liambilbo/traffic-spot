@@ -35,14 +35,15 @@ public class ApplyEnrichment implements FlatMapFunction<Iterator<Event>, EventEx
     private OutputChannelImpl errorServiceChannel = new OutputChannelImpl();
     private OutputChannelImpl filterServiceChannel = new OutputChannelImpl();
 
-    private static class EnrichmentContainerHolder {
-        static final ApplyEnrichment instance = new ApplyEnrichment();
+    private static KieScanner kieScanner;
+    private static KieContainer kieContainer;
+
+
+    public ApplyEnrichment() {
     }
 
-    private KieScanner kieScanner;
-    private KieContainer kieContainer;
 
-    private ApplyEnrichment() {
+    private void setContainer() {
         System.out.println("Start kie session");
         System.setProperty("kie.maven.settings.custom", "/root/.m2/settings.xml");
         KieServices ks = KieServices.Factory.get();
@@ -67,12 +68,12 @@ public class ApplyEnrichment implements FlatMapFunction<Iterator<Event>, EventEx
         }
     }
 
-    public static ApplyEnrichment getInstance() {
-        return EnrichmentContainerHolder.instance;
-    }
-
     @Override
     public Iterator<EventExecuted> call(Iterator<Event> rowIte) throws Exception {
+
+        if (kieContainer==null) {
+            setContainer();
+        }
 
         StatelessKieSession statelessKieSession = kieContainer.newStatelessKieSession("enrichmentStatelessSession");
         //FinderService finderService=new FinderServiceImpl

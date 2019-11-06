@@ -40,15 +40,14 @@ public class ApplyPostfilter implements FlatMapFunction<Iterator<Event>, EventEx
     private OutputChannelImpl filterServiceChannel = new OutputChannelImpl();
     private NotificationChannelImpl notificationServiceChannel = new NotificationChannelImpl();
 
-   private static class PostfilterContainerHolder {
-        static final ApplyPostfilter instance = new ApplyPostfilter();
+    private static KieScanner kieScanner;
+    private static KieContainer kieContainer;
+
+
+    public ApplyPostfilter() {
     }
 
-    private KieScanner kieScanner;
-    private KieContainer kieContainer;
-
-
-    private ApplyPostfilter() {
+    private void setContainer() {
         System.out.println("Start kie session");
         System.setProperty("kie.maven.settings.custom", "/root/.m2/settings.xml");
         KieServices ks = KieServices.Factory.get();
@@ -73,12 +72,13 @@ public class ApplyPostfilter implements FlatMapFunction<Iterator<Event>, EventEx
         }
     }
 
-    public static ApplyPostfilter getInstance() {
-        return PostfilterContainerHolder.instance;
-    }
-
     @Override
     public Iterator<EventExecuted> call(Iterator<Event> rowIte) throws Exception {
+
+
+        if (kieContainer==null) {
+            setContainer();
+        }
 
         StatelessKieSession statelessKieSession = kieContainer.newStatelessKieSession("enrichmentStatelessSession");
 
