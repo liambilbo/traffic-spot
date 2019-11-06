@@ -64,12 +64,12 @@ public class EventEnrichmentPostfilterPipe {
         //SparkSession sparkSession = SparkSession.builder().master("local[2]").appName("com.dxc.bankia.event.pipies.EventEnrichmentPipe").config("spark.logConf","true").getOrCreate();
 
         JavaSparkContext sc = new JavaSparkContext(sparkSession.sparkContext());
-        sc.setLogLevel("WARN");
+        sc.setLogLevel("INFO");
 
         JavaStreamingContext jssc= new JavaStreamingContext(new JavaSparkContext(sparkSession.sparkContext()),
                 Durations.seconds(5));
 
-        sparkSession.sparkContext().setLogLevel("WARN");
+        sparkSession.sparkContext().setLogLevel("INFO");
 
         JavaInputDStream<ConsumerRecord<String, Event>> stream = KafkaUtils.createDirectStream(
                 jssc,
@@ -80,10 +80,10 @@ public class EventEnrichmentPostfilterPipe {
         //Process DStream
         JavaDStream<Event> events = stream.map(ConsumerRecord::value);
 
-        JavaDStream<EventExecuted> enrichmentExecuted = events.map(Event::new).mapPartitions(ApplyEnrichment.getInstance());
+        JavaDStream<EventExecuted> enrichmentExecuted = events.map(Event::new).mapPartitions(new ApplyEnrichment());
 
         JavaDStream<EventExecuted> postfilterExecuted =  enrichmentExecuted.filter(EventExecuted::isEnriched)
-                .map(EventExecuted::getEvent).mapPartitions(ApplyPostfilter.getInstance());
+                .map(EventExecuted::getEvent).mapPartitions(new ApplyPostfilter());
 
         postfilterExecuted.print();
 
