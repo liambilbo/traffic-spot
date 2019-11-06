@@ -80,7 +80,7 @@ public class ApplyPostfilter implements FlatMapFunction<Iterator<Event>, EventEx
             setContainer();
         }
 
-        StatelessKieSession statelessKieSession = kieContainer.newStatelessKieSession("enrichmentStatelessSession");
+        StatelessKieSession statelessKieSession = kieContainer.newStatelessKieSession("postFilterStatelessSession");
 
         //FinderService finderService=new FinderServiceImpl
         //Get Blog type from kie base
@@ -95,8 +95,6 @@ public class ApplyPostfilter implements FlatMapFunction<Iterator<Event>, EventEx
 
         while (rowIte.hasNext()) {
             Event event= rowIte.next();
-            System.out.println("Adding event");
-
 
             Command newInsertOrder = ks.getCommands().newInsert(event, "eventOut");
             Command newFireAllRules = ks.getCommands().newFireAllRules("outFired");
