@@ -51,7 +51,7 @@ public class ApplyPostfilter extends BaseKieContainer implements FlatMapFunction
        // Logger LOGGER = LogManager.getLogger(ApplyEnrichment.class);
         KieServices ks = KieServices.Factory.get();
         ReleaseId releaseId = ks.newReleaseId(groupId, artifactId, version);
-        StatelessKieSession statelessKieSession = this.createStatelessSession("postFilterStatelessSession",releaseId);
+        StatelessKieSession statelessKieSession = createStatelessSession("postFilterStatelessSession",releaseId);
         //FinderService finderService=new FinderServiceImpl
         //Get Blog type from kie base
         statelessKieSession.setGlobal("finderService", finderService);
